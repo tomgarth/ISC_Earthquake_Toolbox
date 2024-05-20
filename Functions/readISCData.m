@@ -46,6 +46,8 @@ for iEvent = 1:nEvents
     primeText = regexp(eventTxt,'([^\r\n]*)[\r\n]+[ ]*\(\#PRIME\)', ...
         'once','tokens');
 
+    %disp(eventTxt)
+
     % Get the line preceding the word 'PRIME' as this is the event line if 
     % prime is a HYPOCENTRE
 
@@ -158,10 +160,38 @@ for iEvent = 1:nEvents
     end
     
     % Extract phase data
+
     if strcmp(include_phases, 'on') == 1
         startOfPhase = regexp(eventTxt,'Sta[\w\s]*Depth','end') +1;
-        phaseData = strtrim(eventTxt(startOfPhase:end));
-        phase = readPhaseData(phaseData);
+
+        end_while = 0;
+
+        while end_while < 2
+            if end_while == 0
+                try
+                    phaseData = strtrim(eventTxt(startOfPhase:end));
+                    phase = readPhaseData(phaseData);
+                    end_while = 2;
+                catch
+                    end_while = 1;
+                    endOfPhase = numel(eventTxt)-1;
+                    disp('ERROR: Excluding stations without locations')
+                    disp(endOfPhase)
+                end
+            end
+
+            if end_while == 1
+                try
+                    phaseData = strtrim(eventTxt(startOfPhase:endOfPhase));
+                    phase = readPhaseData(phaseData);
+                    end_while = 2;
+                catch
+                    endOfPhase = endOfPhase-1;
+%                     disp('ERROR: Excluding stations without locations')
+%                     disp(endOfPhase)
+                end
+            end
+        end
         phase.EventID(:) = eventIds(iEvent);
         Phases = [Phases;phase]; %#ok<AGROW> 
     end

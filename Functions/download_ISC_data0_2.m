@@ -109,7 +109,6 @@ function [Primes, Hypocentres, Magnitudes, Phases] = download_ISC_data0_2( ...
         progress = progress + 1;
         prog_str = sprintf('Download %1.0f %% complete', ...
             (progress/num_steps*100));
-%         disp(prog_str)
         x = progress/num_steps;
 
         if progress == 0
@@ -169,6 +168,7 @@ function [Primes, Hypocentres, Magnitudes, Phases] = download_ISC_data0_2( ...
             [Primes, Hypocentres, Magnitudes, Phases] = readISCData(...
                 text_data, Primes, Hypocentres, Magnitudes, Phases, ...
                 include_phases, include_magnitudes);
+
         end
 
         % Define and make web request for specific polygon area
@@ -199,9 +199,12 @@ function [Primes, Hypocentres, Magnitudes, Phases] = download_ISC_data0_2( ...
             [Primes, Hypocentres, Magnitudes, Phases] = readISCData(text_data, ...
                 Primes, Hypocentres, Magnitudes, Phases, ...
                 include_phases, include_magnitudes);
-        
+
         end
     end
+
+    [Primes] = fix_primes(Primes, Hypocentres);
+
 end
 
 function mustBeOnOff(prop)

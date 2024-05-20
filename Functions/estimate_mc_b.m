@@ -1,4 +1,4 @@
-function [a, b, mag_distr, h_mag, ab_fit] = estimate_mc_b(magnitudes, ...
+function [a, b, mag_distr, xmags, h_mag, ab_fit] = estimate_mc_b(magnitudes, ...
     mb_min_overwrite, mb_max_overwrite, plot_figures)
 
 % A function that gives a rather coartse esimate of b-value
@@ -120,7 +120,8 @@ if (plot_figures == 1)
     plot(x_mags, 10.^ab_fit);
     set(gca, 'Yscale', 'log');
 
-    text_line = sprintf(['\n\n\n\na   = %1.2f\nb   = %1.2f\nm_c = %1.2f'], ft.a, abs(ft.b), mb_min);
+    text_line = sprintf(['\n\n\n\na   = %1.2f\nb   = %1.2f\nm_c = %1.2f'], ...
+        ft.a, abs(ft.b), mb_min);
     text(mb_max-0.5, max(h_mag), text_line);
     
     xlabel('Earthquake Magnitude');
