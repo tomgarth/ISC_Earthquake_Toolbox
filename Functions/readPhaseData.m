@@ -12,7 +12,46 @@ function phases = readPhaseData(phaseTextData)
 
 
 formatSpec = '%5s%7s%6s%10s%12s%6s%6s%6s%7s%8s%1s%1s%1s%6s%10s%7s%1s%1s%1s%6s%1s%5s%11s%6s%9s%3s%6s%6s%5s%4s%1s%9s%10s%8s%7s';
- 
+
+% disp ('!!!!!!! Line 16 !!!!!!!!!')
+% % disp(phaseTextData)
+% % disp ('!!!!!!! Line 18 !!!!!!!!!')
+% n_count = numel(phaseTextData); disp(n_count)
+% n_max   = round(n_count / 200);
+% 
+% for n = 1:n_max
+% 
+%     string_start = ((n-1)*200) + 1; % disp(string_start);
+%     string_end   = n*300; % disp(string_end);
+%     % disp ('!!!!!!!!!!!!!!!!!!!!!!!!!');
+% 
+% %     disp(phaseTextData(string_start:string_end));
+% 
+%     if string_end < n_count
+% 
+% %         disp(phaseTextData(string_start+0:string_start+190));
+% % 
+% %         disp(phaseTextData(string_start+169));
+% % 
+% %         disp ('!!!!!!! Line 36 !!!!!!!!!')
+% 
+%         if phaseTextData(string_start+169) ~= '.'
+% 
+% %             disp(phaseTextData(string_start+169));
+%             phaseTextData(string_start+168:string_start+170) = 'NaN';
+% %             disp(phaseTextData(string_start+150:string_start+210));
+% %             disp(' ');
+% 
+%             disp ('!!!!!! Line 45 !!!!!!!!!');
+% 
+%             disp(' ');
+%         end
+%     end
+% 
+% end
+% 
+% disp ('!!!!!! Line 53 !!!!!!!!!');
+
 if isempty(phaseTextData)
     rawStrings = repmat({""},1,35); %#ok<STRSCALR> 
 else
@@ -51,9 +90,60 @@ phases.Report = categorical(rawStrings{28});
 phases.Chan = categorical(strip(rawStrings{29}));
 phases.AChan = categorical(rawStrings{30});
 phases.LpFm = categorical(rawStrings{31});
+
+% tmp = rawStrings{32};
+% numel(tmp);
+
+% disp(rawStrings{32})
+% disp(rawStrings{33})
+
+% tmp_data = rawStrings{32};
+% disp ('tmp_data:')
+% disp (numel(tmp_data))
+% 
+% disp (tmp_data(999))
+% % disp (tmp_data(numel(tmp_data)))
+% disp (numel(tmp_data(numel(tmp_data))))
+% disp ('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+% 
+% for n = 1:numel(tmp_data)
+%     try
+%         tmp = float(tmp_data(n));
+%     catch
+%         tmp_data(n) = 'NaN';
+%     end
+% end
+
+% disp (tmp)
+% disp (numel(tmp_data(numel(tmp_data))))
+% rawStrings{32} = tmp_data;
+% disp ('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+% 
+% disp ('tmp_data 2:')
+% disp (numel(tmp_data(numel(tmp_data))))
+% disp ('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+% disp (numel(tmp_data(999)))
+
+% for n = 1:numel(tmp_data)
+% 
+%     if tmp_data(n)) == ' '
+%         disp (tmp_data(n))
+%     end
+% end
+% 
+% tmp_data(999) = ' 5555555 ';
+% rawStrings{32} = tmp_data;
+
+% tmp_data = rawStrings{32};
+% disp ('tmp_data:')
+% disp (tmp_data(1))
+% disp (tmp_data(999))
+
+% disp ('!!!!! line 142 !!!!!')
+% 
+% disp(rawStrings{32});
+% disp(rawStrings{33});
+
 phases.StaLat = double(rawStrings{32});
 phases.StaLon = double(rawStrings{33});
-phases.StaElev = double(rawStrings{34});
-phases.InsDepth = double(rawStrings{35});
 
-end
