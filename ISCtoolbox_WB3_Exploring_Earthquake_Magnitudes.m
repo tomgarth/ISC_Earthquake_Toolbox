@@ -177,7 +177,7 @@ Mc_manual = 0;     % Set to zero for undefined
 Mmax_manual = 0;   % This is the maximum magntiude that b-value calculation 
                    % fits. Set ot zero for undefined
 plot_mc_b_fig = 1; % Select whethre to plot the b-value fit (1=yes, 0=no)
-[a_mb,b_mb] = estimate_mc_b(isc_mbs, Mc_manual, Mmax_manual, 1);
+[a_mb,b_mb] = estimate_mc_b(isc_mbs, Mc_manual, Mmax_manual, 1, 0);
 
 
 %% Calculte Mc and b-value for body wave magnitudes (MS)
@@ -185,14 +185,14 @@ Mc_manual = 0;     % Set to zero for undefined
 Mmax_manual = 0;   % This is the maximum magntiude that b-value calculation 
                    % fits. Set ot zero for undefined
 plot_mc_b_fig = 1; % Select whethre to plot the b-value fit (1=yes, 0=no)
-[a_MS,b_MS] = estimate_mc_b(isc_mSs, Mc_manual, Mmax_manual, 1);
+[a_MS,b_MS] = estimate_mc_b(isc_mSs, Mc_manual, Mmax_manual, 1, 0);
 
 %% Calculte Mc and b-value for body wave magnitudes (Mw)
 Mc_manual = 0;     % Set to zero for undefined
 Mmax_manual = 0;   % This is the maximum magntiude that b-value calculation 
                    % fits. Set ot zero for undefined
 plot_mc_b_fig = 1; % Select whethre to plot the b-value fit (1=yes, 0=no)
-[a_Mw,b_Mw] = estimate_mc_b(gcmt_mws, Mc_manual, Mmax_manual, 1);
+[a_Mw,b_Mw] = estimate_mc_b(gcmt_mws, Mc_manual, Mmax_manual, 1, 0);
 
 %% Questions
 % Which magntiude types have the lowest magnitude of completeness?
