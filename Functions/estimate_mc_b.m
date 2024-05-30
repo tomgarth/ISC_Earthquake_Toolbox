@@ -1,5 +1,5 @@
 function [a, b, mag_distr, xmags, h_mag, ab_fit] = estimate_mc_b(magnitudes, ...
-    mb_min_overwrite, mb_max_overwrite, plot_figures)
+    mb_min_overwrite, mb_max_overwrite, plot_figures, plot_text)
 
 % A function that gives a rather coartse esimate of b-value
 % T Garth, 2023
@@ -114,15 +114,17 @@ ab_fit = ft.a + (ft.b*x_mags);
 
 % Plot fit if plot_figures is true
 if (plot_figures == 1)
-    figure; hold on;
+    % figure; hold on;
     scatter(xmags, h_mag, 'filled');
-    scatter(x_mags, 10.^log10_num_mags, 'filled');
-    plot(x_mags, 10.^ab_fit);
+    % scatter(x_mags, 10.^log10_num_mags, 'filled');
+    plot(x_mags, 10.^ab_fit, 'k');
     set(gca, 'Yscale', 'log');
 
-    text_line = sprintf(['\n\n\n\na   = %1.2f\nb   = %1.2f\nm_c = %1.2f'], ...
-        ft.a, abs(ft.b), mb_min);
-    text(mb_max-0.5, max(h_mag), text_line);
+    if plot_text
+        text_line = sprintf(['\n\n\n\na   = %1.2f\nb   = %1.2f\nm_c = %1.2f'], ...
+            ft.a, abs(ft.b), mb_min);
+        text(mb_max-0.5, max(h_mag), text_line);
+    end
     
     xlabel('Earthquake Magnitude');
     ylabel('Cumilative Earthquake Frequency');
