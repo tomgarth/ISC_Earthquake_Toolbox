@@ -1,4 +1,5 @@
 [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=tomgarth/ISC_Earthquake_Toolbox&project=Introduction_ISCToolboxForMATLAB.mlx)
+[![View the ISC Earthquake Toolbox on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/167786-isc-earthquake-toolbox?s_tid=srchtitle)
 
 # ISC Earthquake Toolbox for MATLAB
 A set of MATLAB functions for downloading and handling earthquake data from the International Seismological Centre (ISC).
