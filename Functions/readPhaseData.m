@@ -1,14 +1,9 @@
 function phases = readPhaseData(phaseTextData)
 % readPhaseData 
-% Reads in the Hypocentre Textual Data as a table
+% Reads in the phase Data as a table from the ISF data
 %
 % phases = readPhaseData(phaseTextData) reads in the phase text data and 
 % retuns it as a table.
-
-% Due to the appearance of f appneded to the depth to indicat if the
-% epicenter is fixed and due to mustures of valid spaces and space
-% being using as a delimiter it is best to read in the text columsn and then
-% covert
 
 
 formatSpec = '%5s%7s%6s%10s%12s%6s%6s%6s%7s%8s%1s%1s%1s%6s%10s%7s%1s%1s%1s%6s%1s%5s%11s%6s%9s%3s%6s%6s%5s%4s%1s%9s%10s%8s%7s';
