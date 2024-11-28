@@ -38,10 +38,16 @@ if bird_test == 0
     for i = 1:length(bird_out)-1
 
         %%% Get Coordinates from Bird Fault Segments
-
         faults=splitlines(bird_out(i));
+        if i == 1
+            header=faults(1);
+        else
+            header=faults(2);
+        end
+        bird_faults{1,i}=header{1}(1:5);
+        bird_faults{2,i}=header{1}(3);
         fault=faults(3:end-1);
-        bird_faults{1,i} = split(fault,",");
+        bird_faults{3,i} = split(fault,",");
 
     end
 
@@ -71,22 +77,34 @@ if gem_test == 0
     
     gem_data = webread(gem_url,options);
     
-    %%% Split GEM Faults into individual Fault Segments
-    
-    gem_out = extractBetween(gem_data,"<LineString><coordinates>","</coordinates></LineString>");
+    %%% Get individual GEM Faults
+
+    gem_all = extractBetween(gem_data,"<Placemark>","</Placemark>");
 
     %%% Create Cell Structure for GEM Faults
 
     gem_faults = {};
 
-    %%% Loop over GEM Fault Segments
+    for iii = 1:length(gem_all)
 
-    for ii = 1:length(gem_out)
+        %%% GEM Fault Name
+
+        gem_name = extractBetween(gem_all(iii),"<name>","</name>");
+
+        %%% GEM Fault Type
+
+        gem_type = extractBetween(gem_all(iii),"<SimpleData name=""slip_type"">","</SimpleData>");
+
+        %%% Get GEM Fault coordinates
+    
+        gem_out = extractBetween(gem_all(iii),"<LineString><coordinates>","</coordinates></LineString>");
 
         %%% Get Coordinates from GEM Fault Segments
 
-        faults = split(gem_out(ii)," ");
-        gem_faults{1,ii} = split(faults,",");
+        faults = split(gem_out," ");
+        gem_faults{1,iii} = gem_name;
+        gem_faults{2,iii} = gem_type;
+        gem_faults{3,iii} = split(faults,",");
 
     end
 
