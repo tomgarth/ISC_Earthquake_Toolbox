@@ -89,7 +89,11 @@ for iEvent = 1:nEvents
   
     % Extract all comments and hypocentres to commData
 
-    commData = deblank(eventTxt(regexp(eventTxt,'\d{4}/\d{2}/\d{2}','once','start'):regexp(eventTxt,'(Year|Magnitude|Sta|Event|STOP) ', 'once', 'start')-1));
+    if isempty(regexp(eventTxt,'(Year|Magnitude|Sta|Event|STOP) ', 'once', 'start')) ~= 0
+        commData = deblank(eventTxt(regexp(eventTxt,'\d{4}/\d{2}/\d{2}','once','start'):end-1));
+    else
+        commData = deblank(eventTxt(regexp(eventTxt,'\d{4}/\d{2}/\d{2}','once','start'):regexp(eventTxt,'(Year|Magnitude|Sta|Event|STOP) ', 'once', 'start')-1));
+    end
 
     % Extract all hypocentres to hypocentreData
 
@@ -240,7 +244,7 @@ for iEvent = 1:nEvents
             tm = 1;
             ofm.MomentRateType(1) = categorical(cellstr('Triangular'));
         end   
-        if any(~isnan(ofm{:,:})) % If any elements of table ofm are not nan 
+        if any(~isnan(ofm{:,:})) | length(commMT) > 0 | length(commFP) > 0 | length(commPA) > 0   % If any elements of table ofm are not nan 
             ofm.OrigID = str2double(strip(comm_hypid)); % Add hypid to table ofm
             OFM = [OFM;ofm]; %#ok<AGROW> 
         end
@@ -340,6 +344,28 @@ end
 % Combine partial Focal Mechanism Tables into master Focal Mechanism table
 % using the OrigID as the key
 
-TempTable1 = outerjoin(MTS,FPS,'MergeKeys',true);
-TempTable2 = outerjoin(TempTable1,PAS,'MergeKeys',true);
-FocalMechanisms = outerjoin(TempTable2,OFM,'MergeKeys',true);
+if isempty(MTS) > 0 & isempty(FPS) > 0 & isempty(PAS) > 0
+    disp('NO FOCAL MECHANISM INFORMATION')
+elseif isempty(MTS) > 0 & isempty(FPS) > 0 & isempty(PAS) < 1
+    FocalMechanisms = outerjoin(PAS,OFM,'MergeKeys',true);
+elseif isempty(MTS) > 0 & isempty(FPS) < 1 & isempty(PAS) > 0
+    FocalMechanisms = outerjoin(FPS,OFM,'MergeKeys',true);
+elseif isempty(MTS) > 0 & isempty(FPS) < 1 & isempty(PAS) < 1
+    TempTable1 = outerjoin(FPS,PAS,'MergeKeys',true);
+    FocalMechanisms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+elseif isempty(MTS) < 1 & isempty(FPS) > 0 & isempty(PAS) > 0
+    FocalMechanisms = outerjoin(MTS,OFM,'MergeKeys',true);
+elseif isempty(MTS) < 1 & isempty(FPS) > 0 & isempty(PAS) < 1
+    TempTable1 = outerjoin(MTS,PAS,'MergeKeys',true);
+    FocalMechanisms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+elseif isempty(MTS) < 1 & isempty(FPS) < 1 & isempty(PAS) > 0
+    TempTable1 = outerjoin(MTS,FPS,'MergeKeys',true);
+    FocalMechanisms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+elseif isempty(MTS) < 1 & isempty(FPS) < 1 & isempty(PAS) < 1
+    TempTable1 = outerjoin(MTS,FPS,'MergeKeys',true);
+    TempTable2 = outerjoin(TempTable1,PAS,'MergeKeys',true);
+    FocalMechanisms = outerjoin(TempTable2,OFM,'MergeKeys',true);
+end
+    
+
+
