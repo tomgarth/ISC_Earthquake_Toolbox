@@ -158,8 +158,13 @@ for iEvent = 1:nEvents
         commTM = regexp(comm_lines,'(\(Triangular moment-rate function|\(type triangle)','once','start');
 
         if length(commMT) > 0
-            endMT = commMT+355; % Moment tensor block is 355 characters long
-            mtData = comm_lines(commMT+188:endMT); % Extract data without header
+            try
+                endMT = commMT+355; % Moment tensor block is 355 characters long
+                mtData = comm_lines(commMT+188:endMT); % Extract data without header
+            catch
+                endMT = commMT+355; % Moment tensor block is 355 characters long
+                mtData = comm_lines(commMT+188:endMT-1); % Extract data without header
+            end
             mtData = regexprep(mtData,'\(#|\)|(\+\s|\n',''); % Remove brackets and new lines
             mts =  readMTData(mtData,comm_hypid); % mts table defined by function readMTData
         end
@@ -344,28 +349,112 @@ end
 % Combine partial Focal Mechanism Tables into master Focal Mechanism table
 % using the OrigID as the key
 
+fms = table;
+fms_final = table;
+
+empty_mts = table;
+empty_mts.ScaleMT = nan;
+empty_mts.M0 = nan;
+empty_mts.fCLVD = nan;
+empty_mts.MRR = nan;
+empty_mts.MTT = nan;
+empty_mts.MPP = nan;
+empty_mts.MRT = nan;
+empty_mts.MTP = nan;
+empty_mts.MPR = nan;
+empty_mts.NST1 = nan;
+empty_mts.NST2 = nan;
+empty_mts.AuthorMT = categorical(nan);
+empty_mts.eM0 = nan;
+empty_mts.eCLVD = nan;
+empty_mts.eMRR = nan;
+empty_mts.eMTT = nan;
+empty_mts.eMPP = nan;
+empty_mts.eMRT = nan;
+empty_mts.eMTP = nan;
+empty_mts.eMPR = nan;
+empty_mts.NCO1 = nan;
+empty_mts.NCO2 = nan;
+empty_mts.Duration = nan;
+
+empty_fps = table;
+empty_fps.Type = categorical(nan);
+empty_fps.Strike1 = nan;
+empty_fps.Dip1 = nan;
+empty_fps.Rake1 = nan;
+empty_fps.NP1 = nan;
+empty_fps.NS1 = nan;
+empty_fps.Plane1 = categorical(nan);
+empty_fps.AuthorFP = categorical(nan);
+empty_fps.Strike2 = nan;
+empty_fps.Dip2 = nan;
+empty_fps.Rake2 = nan;
+empty_fps.NP2 = nan;
+empty_fps.NS2 = nan;
+empty_fps.Plane2 = categorical(nan);
+
+empty_pas = table;
+empty_pas.ScalePA = nan;
+empty_pas.Tval = nan;
+empty_pas.Tazi = nan;
+empty_pas.Tpl = nan;
+empty_pas.Bval = nan;
+empty_pas.Bazi = nan;
+empty_pas.Bpl = nan;
+empty_pas.Pval = nan;
+empty_pas.Pazi = nan;
+empty_pas.Ppl = nan;
+empty_pas.AuthorPA = categorical(nan);
+empty_pas.eTval = nan;
+empty_pas.eTazi = nan;
+empty_pas.eTpl = nan;
+empty_pas.eBval = nan;
+empty_pas.eBazi = nan;
+empty_pas.eBpl = nan;
+empty_pas.ePval = nan;
+empty_pas.ePazi = nan;
+empty_pas.ePpl = nan;
+empty_pas.fCLVD_pa = nan;
+
 if isempty(MTS) > 0 & isempty(FPS) > 0 & isempty(PAS) > 0
     disp('NO FOCAL MECHANISM INFORMATION')
 elseif isempty(MTS) > 0 & isempty(FPS) > 0 & isempty(PAS) < 1
-    FocalMechanisms = outerjoin(PAS,OFM,'MergeKeys',true);
+    fms = outerjoin(PAS,OFM,'MergeKeys',true);
+    mts = repmat(empty_mts(1,:),[height(fms) 1]);
+    fps = repmat(empty_fps(1,:),[height(fms) 1]);
+    fms_final = [fms mts fps];
 elseif isempty(MTS) > 0 & isempty(FPS) < 1 & isempty(PAS) > 0
-    FocalMechanisms = outerjoin(FPS,OFM,'MergeKeys',true);
+    fms = outerjoin(FPS,OFM,'MergeKeys',true);
+    mts = repmat(empty_mts(1,:),[height(fms) 1]);
+    pas = repmat(empty_pas(1,:),[height(fms) 1]);
+    fms_final = [fms mts pas];
 elseif isempty(MTS) > 0 & isempty(FPS) < 1 & isempty(PAS) < 1
     TempTable1 = outerjoin(FPS,PAS,'MergeKeys',true);
-    FocalMechanisms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+    fms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+    mts = repmat(empty_mts(1,:),[height(fms) 1]);
+    fms_final = [fms mts];
 elseif isempty(MTS) < 1 & isempty(FPS) > 0 & isempty(PAS) > 0
-    FocalMechanisms = outerjoin(MTS,OFM,'MergeKeys',true);
+    fms = outerjoin(MTS,OFM,'MergeKeys',true);
+    fps = repmat(empty_fps(1,:),[height(fms) 1]);
+    pas = repmat(empty_pas(1,:),[height(fms) 1]);
+    fms_final = [fms fps pas];
 elseif isempty(MTS) < 1 & isempty(FPS) > 0 & isempty(PAS) < 1
     TempTable1 = outerjoin(MTS,PAS,'MergeKeys',true);
-    FocalMechanisms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+    fms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+    fps = repmat(empty_fps(1,:),[height(fms) 1]);
+    fms_final = [fms fps];
 elseif isempty(MTS) < 1 & isempty(FPS) < 1 & isempty(PAS) > 0
     TempTable1 = outerjoin(MTS,FPS,'MergeKeys',true);
-    FocalMechanisms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+    fms = outerjoin(TempTable1,OFM,'MergeKeys',true);
+    pas = repmat(empty_pas(1,:),[height(fms) 1]);
+    fms_final = [fms pas];
 elseif isempty(MTS) < 1 & isempty(FPS) < 1 & isempty(PAS) < 1
     TempTable1 = outerjoin(MTS,FPS,'MergeKeys',true);
     TempTable2 = outerjoin(TempTable1,PAS,'MergeKeys',true);
-    FocalMechanisms = outerjoin(TempTable2,OFM,'MergeKeys',true);
+    fms_final = outerjoin(TempTable2,OFM,'MergeKeys',true);
 end
-    
+
+FocalMechanisms = [FocalMechanisms;fms_final]; %#ok<AGROW> 
+
 
 
