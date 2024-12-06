@@ -1,4 +1,4 @@
-function [transectOutput,eq_dist,eq_depth,topo_dist,transect_topo] = earthquakeTransectCalc(transectInput,linelat1,linelon1,linelat2,linelon2,transect_width)
+function [transectOutput,eq_dist,eq_depth,topo_dist,transect_topo,transect_bearing] = earthquakeTransectCalc(transectInput,linelat1,linelon1,linelat2,linelon2,transect_width)
 
 % Transect input is [EventID, OrigID, lat, long, depth]
 % e.g. transectInput = allPrimes(:,[20 19 4 5 9])
@@ -24,6 +24,7 @@ wgs84 = wgs84Ellipsoid("m");
 % Calculate bearing of the transect and length of the transect
 
 [line_distance,line_bearing] = distance(linelat1,linelon1,linelat2,linelon2,wgs84);
+transect_bearing = line_bearing;
 
 % Create bounding box arrays
 
