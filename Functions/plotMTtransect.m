@@ -159,14 +159,18 @@ surf(xx_pos(cout_pos),yy_pos(cout_pos),zz_pos(cout_pos), ...
 ax = gca;
 axis ('off') 
 
+% View 3D Plot from correct transect azimuth
 view(azi,0);
 
+% Create 2D plot of focal mechanism viewed from correct transect azimuth
 export_fig transectMT.png -transparent -r5;
 close;
 
+% Scale the focal mechanisms
 xscale = (plotScale*(maxlength/maxdepth))/5;
 yscale = (plotScale)/2;
 
+% Read and plot Focal Mechanism to transect 
 [img,map,alphachannel] = imread('transectMT.png');
 image(img,'AlphaData',alphachannel,'xdata',[(centerX-xscale) (centerX+xscale)],'ydata',[(centerY+yscale)  (centerY-yscale)])
 
