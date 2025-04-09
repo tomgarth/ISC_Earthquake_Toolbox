@@ -15,7 +15,7 @@ database, and build a data set based on the area, time span and magnitude range 
 by you in the previous workbook, or one of the distributed example datasets) with a focus on plotting earthquake locations. [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=tomgarth/ISC_Earthquake_Toolbox&file=ISCtoolbox_WB2_Exploring_Earthquake_Locations.mlx)
 
 - The third **(ISCtoolbox_WB3_Exploring_Earthquake_Magnitudes.mlx)** introduces and compares different earthquake magnitude types, 
-and enables a simple interactive Mc and b-value calulations. [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=tomgarth/ISC_Earthquake_Toolbox&file=ISCtoolbox_WB3_Exploring_Earthquake_Magnitudes.mlx)
+and enables a simple interactive Mc and b-value calculations. [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=tomgarth/ISC_Earthquake_Toolbox&file=ISCtoolbox_WB3_Exploring_Earthquake_Magnitudes.mlx)
 
 For more information on the ISC Toolbox for MATLAB please visit www.isc.ac.uk/projects/matlab
 
